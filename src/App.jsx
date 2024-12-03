@@ -23,8 +23,7 @@ function App() {
     }
     
     try {
-      // const apiUrl = import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:5173";
-      const apiUrl = "http://localhost:5173/"
+      const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
       const response = await axios.post(`${apiUrl}/scrape`, { url });
       if (response.data && response.data.data) {
         const { links, contents, images } = response.data.data;
