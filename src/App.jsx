@@ -23,7 +23,7 @@ function App() {
     }
     
     try {
-      const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+      const apiUrl = import.meta.env.VITE_REACT_APP_API_URL || "https://web-scraper-backend-5wta.onrender.com";
       const response = await axios.post(`${apiUrl}/scrape`, { url });
       if (response.data && response.data.data) {
         const { links, contents, images } = response.data.data;
