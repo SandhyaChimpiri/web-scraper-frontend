@@ -23,7 +23,15 @@ function App() {
     }
     
     try {
-      const apiUrl ="https://web-scraper-backend-5wta.onrender.com/scrape";
+
+      // const apiUrl ="http://localhost:5000/scrape" || "https://web-scraper-backend-5wta.onrender.com/scrape";
+      //const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+      const apiUrl = process.env.REACT_APP_ENV === 'production'
+         ? 'https://web-scraper-backend-5wta.onrender.com/scrape'
+         : 'http://localhost:5000/scrape';
+
+
       const response = await axios.post(apiUrl, { url });
       if (response.data && response.data.data) {
         const { links, contents, images } = response.data.data;
@@ -32,7 +40,12 @@ function App() {
           contents: contents || [],
           images: images || [],
         });
-        setScreenshot(`${apiUrl}${response.data.screenshot}`);
+        
+        const screenshotUrl = process.env.REACT_APP_ENV === 'production'
+        ? `https://your-backend-url.vercel.app${response.data.screenshot}`
+        : `http://localhost:5000${response.data.screenshot}`;
+        setScreenshot(screenshotUrl);
+
       } else {
         setResult({ links: [], contents: [] });
         setError("Invalid response format from the server.");
@@ -106,7 +119,7 @@ function App() {
               <ul className="image-list">
               {result.images.map((image, index) => (
                 <li>
-                <img key={index} src={image.src} alt={image.alt || "Image"} style={{ width: "200px", marginBottom: "0.5rem" }} />
+                <img key={index} src={image.src} alt={image.alt || "Image"} style={{ width: "200px",height:"150px", marginBottom: "0.5rem" }} />
                 </li>
               ))}
               </ul>
@@ -115,7 +128,7 @@ function App() {
           {activeSection === "screenshot" && (
             <div className="center-content">
               <img src={screenshot} alt="Screenshot" style={{ width: "300px", border: "1px solid #ccc" }} />
-            </div>
+            </div> 
           )}
           <button onClick={() => setActiveSection("")} className="close-button"> Close </button>
         </div>
