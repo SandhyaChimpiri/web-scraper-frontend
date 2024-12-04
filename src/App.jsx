@@ -27,10 +27,11 @@ function App() {
       // const apiUrl ="http://localhost:5000/scrape" || "https://web-scraper-backend-5wta.onrender.com/scrape";
       //const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-      const apiUrl = process.env.REACT_APP_ENV === 'production'
-         ? 'https://web-scraper-backend-5wta.onrender.com/scrape'
-         : 'http://localhost:5000/scrape';
+      // const apiUrl = process.env.REACT_APP_ENV === 'production'
+      //    ? 'https://web-scraper-backend-5wta.onrender.com/scrape'
+      //    : 'http://localhost:5000/scrape';
 
+      const apiUrl ="https://web-scraper-backend-5wta.onrender.com/scrape";
 
       const response = await axios.post(apiUrl, { url });
       if (response.data && response.data.data) {
