@@ -15,25 +15,17 @@ function App() {
     setLoading(true);
     setError(null);
     setScreenshot(null);
-
+  
     if (!url.trim() || !/^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/.test(url)) {
       setError("Please enter a valid URL.");
       setLoading(false);
       return;
     }
-    
+  
     try {
-
-      // const apiUrl ="http://localhost:5000/scrape" || "https://web-scraper-backend-5wta.onrender.com/scrape";
-      //const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
-      // const apiUrl = process.env.REACT_APP_ENV === 'production'
-      //    ? 'https://web-scraper-backend-5wta.onrender.com/scrape'
-      //    : 'http://localhost:5000/scrape';
-
-      const apiUrl ="https://web-scraper-backend-5wta.onrender.com/scrape";
-
-      const response = await axios.post(apiUrl, { url });
+      const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+      const response = await axios.post(`${apiUrl}/scrape`, { url });
+  
       if (response.data && response.data.data) {
         const { links, contents, images } = response.data.data;
         setResult({
@@ -41,14 +33,10 @@ function App() {
           contents: contents || [],
           images: images || [],
         });
-        
-        const screenshotUrl = process.env.REACT_APP_ENV === 'production'
-        ? `https://your-backend-url.vercel.app${response.data.screenshot}`
-        : `http://localhost:5000${response.data.screenshot}`;
-        setScreenshot(screenshotUrl);
-
-      } else {
-        setResult({ links: [], contents: [] });
+  
+        setScreenshot(`${apiUrl}${response.data.screenshot}`);
+      } 
+      else {
         setError("Invalid response format from the server.");
       }
     } catch (err) {
@@ -58,6 +46,7 @@ function App() {
       setLoading(false);
     }
   };
+  
 
   const toggleSection = (section) => {
     setActiveSection((prev) => (prev === section ? "" : section)); 
