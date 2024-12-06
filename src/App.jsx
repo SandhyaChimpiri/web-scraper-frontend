@@ -23,7 +23,7 @@ function App() {
     }
   
     try {
-      const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+      const apiUrl = import.meta.env.VITE_REACT_APP_ENV==="production" ? import.meta.env.VITE_REACT_APP_API_URL : "http://localhost:5000";
       const response = await axios.post(`${apiUrl}/scrape`, { url });
   
       if (response.data && response.data.data) {
